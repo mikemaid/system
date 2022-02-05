@@ -2,16 +2,16 @@ from scipy.spatial import distance as dist
 from imutils.video import VideoStream
 from threading import Thread
 import numpy as np
-import playsound
 import time
 import dlib
 import cv2
 import queue
 import library
-import RPi.GPIO as GPIO
 from time import sleep
+from pyGPIO2.gpio import gpio
+from pyGPIO2.gpio import connector
 
-class driver_monitoring_system:
+class drivermonitor:
     EAR_THRESHOLD = 0.24
     EAR_SUBSEQUENT_FRAMES = 4
     COUNTER = 0
@@ -37,28 +37,22 @@ class driver_monitoring_system:
                   [2, 6],
                   [3, 7]]
 
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
+    gpio.init()
 
-    buzzer = 32
-    GPIO.setup(buzzer,GPIO.OUT)
-    GPIO.output(buzzer,GPIO.LOW)
+    gpio.setcfg(connector.gpio12p32, gpio.OUTPUT)
+    gpio.output(connector.gpio12p32, gpio.LOW)
 
-    rightir = 15
-    GPIO.setup(rightir,GPIO.OUT)
-    GPIO.output(rightir,GPIO.LOW)
+    gpio.setcfg(connector.gpio22p15, gpio.OUTPUT)
+    gpio.output(connector.gpio22p15, gpio.LOW)
 
-    leftir = 29
-    GPIO.setup(leftir,GPIO.OUT)
-    GPIO.output(leftir,GPIO.LOW)
+    gpio.setcfg(connector.gpio5p29, gpio.OUTPUT)
+    gpio.output(connector.gpio5p29, gpio.LOW)
 
-    rightled = 7
-    GPIO.setup(rightled,GPIO.OUT)
-    GPIO.output(rightled,GPIO.HIGH)
+    gpio.setcfg(connector.gpio4p7, gpio.OUTPUT)
+    gpio.output(connector.gpio4p7, gpio.HIGH)
 
-    leftled = 33
-    GPIO.setup(leftled,GPIO.OUT)
-    GPIO.output(leftled,GPIO.HIGH)
+    gpio.setcfg(connector.gpio13p33, gpio.OUTPUT)
+    gpio.output(connector.gpio13p33, gpio.HIGH)
 
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor("landmarks.dat")
@@ -96,19 +90,19 @@ class driver_monitoring_system:
             if len(rects) > 0:
                     if euler_angle[0, 0] > PITCH_UP or euler_angle[0, 0] < PITCH_DOWN or euler_angle[1, 0] > YAW_UP or euler_angle[1, 0] < YAW_DOWN:
                             if HEAD_COUNTER >= HEAD_SUBSEQUENT_FRAMES:
-                                    GPIO.output(buzzer,GPIO.HIGH)
-                                    GPIO.output(rightir,GPIO.HIGH)
-                                    GPIO.output(leftir,GPIO.HIGH)
+                                    gpio.output(connector.gpio12p32, gpio.HIGH)
+                                    gpio.output(connector.gpio22p15, gpio.HIGH)
+                                    gpio.output(connector.gpio5p29, gpio.HIGH)
                                     time.sleep(0.05)
-                                    GPIO.output(buzzer,GPIO.LOW)
-                                    GPIO.output(rightir,GPIO.LOW)
-                                    GPIO.output(leftir,GPIO.LOW)
+                                    gpio.output(connector.gpio12p32, gpio.LOW)
+                                    gpio.output(connector.gpio22p15, gpio.LOW)
+                                    gpio.output(connector.gpio5p29, gpio.LOW)
                     if ear < EAR_THRESHOLD:
                             if COUNTER >= EAR_SUBSEQUENT_FRAMES:
-                                    GPIO.output(buzzer,GPIO.HIGH)
-                                    GPIO.output(rightir,GPIO.HIGH)
-                                    GPIO.output(leftir,GPIO.HIGH)
+                                    gpio.output(connector.gpio12p32, gpio.HIGH)
+                                    gpio.output(connector.gpio22p15, gpio.HIGH)
+                                    gpio.output(connector.gpio5p29, gpio.HIGH)
                                     time.sleep(0.05)
-                                    GPIO.output(buzzer,GPIO.LOW)
-                                    GPIO.output(rightir,GPIO.LOW)
-                                    GPIO.output(leftir,GPIO.LOW)
+                                    gpio.output(connector.gpio12p32, gpio.LOW)
+                                    gpio.output(connector.gpio22p15, gpio.LOW)
+                                    gpio.output(connector.gpio5p29, gpio.LOW)
