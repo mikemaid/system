@@ -5,7 +5,7 @@ import numpy as np
 import time
 import dlib
 import cv2
-import queue
+import Queue
 import library
 from time import sleep
 from pyGPIO2.gpio import gpio
