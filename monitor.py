@@ -36,14 +36,33 @@ class driver_monitoring_system:
                   [1, 5],
                   [2, 6],
                   [3, 7]]
-     
+
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
-    buzzer = 23
+
+    buzzer = 32
     GPIO.setup(buzzer,GPIO.OUT)
     GPIO.output(buzzer,GPIO.LOW)
+
+    rightir = 15
+    GPIO.setup(rightir,GPIO.OUT)
+    GPIO.output(rightir,GPIO.LOW)
+
+    leftir = 29
+    GPIO.setup(leftir,GPIO.OUT)
+    GPIO.output(leftir,GPIO.LOW)
+
+    rightled = 7
+    GPIO.setup(rightled,GPIO.OUT)
+    GPIO.output(rightled,GPIO.HIGH)
+
+    leftled = 33
+    GPIO.setup(leftled,GPIO.OUT)
+    GPIO.output(leftled,GPIO.HIGH)
+
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor("landmarks.dat")
+
     vs = VideoStream(usePiCamera=True).start()
     time.sleep(1.0)
 
@@ -73,14 +92,23 @@ class driver_monitoring_system:
                             COUNTER += 1
                     else:
                             COUNTER = 0
+
             if len(rects) > 0:
                     if euler_angle[0, 0] > PITCH_UP or euler_angle[0, 0] < PITCH_DOWN or euler_angle[1, 0] > YAW_UP or euler_angle[1, 0] < YAW_DOWN:
                             if HEAD_COUNTER >= HEAD_SUBSEQUENT_FRAMES:
                                     GPIO.output(buzzer,GPIO.HIGH)
+                                    GPIO.output(rightir,GPIO.HIGH)
+                                    GPIO.output(leftir,GPIO.HIGH)
                                     time.sleep(0.05)
                                     GPIO.output(buzzer,GPIO.LOW)
+                                    GPIO.output(rightir,GPIO.LOW)
+                                    GPIO.output(leftir,GPIO.LOW)
                     if ear < EAR_THRESHOLD:
                             if COUNTER >= EAR_SUBSEQUENT_FRAMES:
                                     GPIO.output(buzzer,GPIO.HIGH)
+                                    GPIO.output(rightir,GPIO.HIGH)
+                                    GPIO.output(leftir,GPIO.HIGH)
                                     time.sleep(0.05)
                                     GPIO.output(buzzer,GPIO.LOW)
+                                    GPIO.output(rightir,GPIO.LOW)
+                                    GPIO.output(leftir,GPIO.LOW)
