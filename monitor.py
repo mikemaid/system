@@ -39,20 +39,20 @@ class drivermonitor:
 
     gpio.init()
 
-    gpio.setcfg(connector.gpio12p32, gpio.OUTPUT)
-    gpio.output(connector.gpio12p32, gpio.LOW)
+    gpio.setcfg(connector.GPIOp32, gpio.OUTPUT)
+    gpio.output(connector.GPIOp32, gpio.LOW)
 
-    gpio.setcfg(connector.gpio22p15, gpio.OUTPUT)
-    gpio.output(connector.gpio22p15, gpio.LOW)
+    gpio.setcfg(connector.GPIOp15, gpio.OUTPUT)
+    gpio.output(connector.GPIOp15, gpio.LOW)
 
-    gpio.setcfg(connector.gpio5p29, gpio.OUTPUT)
-    gpio.output(connector.gpio5p29, gpio.LOW)
+    gpio.setcfg(connector.GPIOp29, gpio.OUTPUT)
+    gpio.output(connector.GPIOp29, gpio.LOW)
 
-    gpio.setcfg(connector.gpio4p7, gpio.OUTPUT)
-    gpio.output(connector.gpio4p7, gpio.HIGH)
+    gpio.setcfg(connector.GPIOp7, gpio.OUTPUT)
+    gpio.output(connector.GPIOp7, gpio.HIGH)
 
-    gpio.setcfg(connector.gpio13p33, gpio.OUTPUT)
-    gpio.output(connector.gpio13p33, gpio.HIGH)
+    gpio.setcfg(connector.GPIOp33, gpio.OUTPUT)
+    gpio.output(connector.GPIOp33, gpio.HIGH)
 
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor("landmarks.dat")
@@ -90,19 +90,19 @@ class drivermonitor:
             if len(rects) > 0:
                     if euler_angle[0, 0] > PITCH_UP or euler_angle[0, 0] < PITCH_DOWN or euler_angle[1, 0] > YAW_UP or euler_angle[1, 0] < YAW_DOWN:
                             if HEAD_COUNTER >= HEAD_SUBSEQUENT_FRAMES:
-                                    gpio.output(connector.gpio12p32, gpio.HIGH)
-                                    gpio.output(connector.gpio22p15, gpio.HIGH)
-                                    gpio.output(connector.gpio5p29, gpio.HIGH)
+                                    gpio.output(connector.GPIOp32, gpio.HIGH)
+                                    gpio.output(connector.GPIOp15, gpio.HIGH)
+                                    gpio.output(connector.GPIOp29, gpio.HIGH)
                                     time.sleep(0.05)
-                                    gpio.output(connector.gpio12p32, gpio.LOW)
-                                    gpio.output(connector.gpio22p15, gpio.LOW)
-                                    gpio.output(connector.gpio5p29, gpio.LOW)
+                                    gpio.output(connector.GPIOp32, gpio.LOW)
+                                    gpio.output(connector.GPIOp15, gpio.LOW)
+                                    gpio.output(connector.GPIOp29, gpio.LOW)
                     if ear < EAR_THRESHOLD:
                             if COUNTER >= EAR_SUBSEQUENT_FRAMES:
-                                    gpio.output(connector.gpio12p32, gpio.HIGH)
-                                    gpio.output(connector.gpio22p15, gpio.HIGH)
-                                    gpio.output(connector.gpio5p29, gpio.HIGH)
+                                    gpio.output(connector.GPIOp32, gpio.HIGH)
+                                    gpio.output(connector.GPIOp15, gpio.HIGH)
+                                    gpio.output(connector.GPIOp29, gpio.HIGH)
                                     time.sleep(0.05)
-                                    gpio.output(connector.gpio12p32, gpio.LOW)
-                                    gpio.output(connector.gpio22p15, gpio.LOW)
-                                    gpio.output(connector.gpio5p29, gpio.LOW)
+                                    gpio.output(connector.GPIOp32, gpio.LOW)
+                                    gpio.output(connector.GPIOp15, gpio.LOW)
+                                    gpio.output(connector.GPIOp29, gpio.LOW)
